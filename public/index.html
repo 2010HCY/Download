@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="https://100713.xyz/medias/Hlogo徽章.svg">
+    <meta name="keywords" content="静水深流, Z-library图书下载不了, Z-library图书下载代理, Z-library图书">
+    <meta name="description" content="Z-library图书下载服务">
+    <meta name="author" content="Ethaniel">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图书下载服务</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom right, #2775b6, #00f2fe);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .form-container input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .form-container button {
+            background: #e16c96;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .form-container button:hover {
+            background: #e16c96;
+        }
+
+        .description {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .description p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <h1>图书下载服务</h1>
+    <div class="form-container">
+        <form id="downloadForm" method="GET" action="/download">
+            <input type="text" name="url" placeholder="请粘贴下载链接" required>
+            <button type="submit">开始下载</button>
+        </form>
+    </div>
+    <div class="description">
+        <p>欢迎使用图书下载服务</p>
+        <p>如果你遇到了无法下载的情况，你可以复制你要下载图书链接，然后点击下载</p>
+        <p>此服务是免费的，请勿恶意请求、刷流量，违者封禁外加画个圈圈诅咒你</p>
+    </div>
+</body>
+</html>
