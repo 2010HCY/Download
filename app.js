@@ -1,10 +1,18 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 const request = require('request');
 
 const app = express();
-const PORT = 80;
+const PORT = 443; // HTTPS 使用的默认端口
+
+// HTTPS 证书文件路径
+const certDir = path.join(__dirname, 'cert');
+const sslOptions = {
+    key: fs.readFileSync('/etc/letsencrypt/live/download.100713.xyz/privkey.pem'), // 私钥
+    cert: fs.readFileSync('/etc/letsencrypt/live/download.100713.xyz/fullchain.pem'), // 证书
+};
 
 // 黑名单
 const blackListFile = path.join(__dirname, 'blacklist.json');
@@ -13,7 +21,6 @@ const logDir = path.join(__dirname, 'logs');
 // 统计数据
 const statsFile = path.join(__dirname, 'stats.json');
 
-// 初始化
 if (!fs.existsSync(blackListFile)) fs.writeFileSync(blackListFile, JSON.stringify([]));
 if (!fs.existsSync(logDir)) fs.mkdirSync(logDir);
 if (!fs.existsSync(statsFile)) {
@@ -82,6 +89,17 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const httpApp = express();
+httpApp.use((req, res) => {
+    const host = req.headers.host.replace(/:\d+$/, ''); 
+    res.redirect(301, `https://${host}${req.url}`);
+});
+
 // 下载代理路由
 app.get('/download', (req, res) => {
     const { url } = req.query;
@@ -131,9 +149,9 @@ app.post('/admin/blacklist', express.json(), (req, res) => {
     res.send(`IP ${ip} added to blacklist.`);
 });
 
-app.listen(PORT, () => {
-    writeLog(`Server started on port ${PORT}`);
-    console.log(`Server running on http://localhost:${PORT}`);
+https.createServer(sslOptions, app).listen(PORT, () => {
+    writeLog(`HTTPS server started on port ${PORT}`);
+    console.log(`HTTPS server running on https://localhost:${PORT}`);
 });
 
 //作者黄行山（Ethaniel）
