@@ -50,16 +50,23 @@ function isBlackListed(ip) {
 //希望此功能永远不要用上
 
 // 日志，最大10MB
-function writeLog(message) {
-    const logMessage = `[${new Date().toISOString()}] ${message}\n`;
-    const logFiles = fs.readdirSync(logDir).filter(f => f.startsWith('log-')).sort();
-    const latestFile = logFiles.length > 0 ? path.join(logDir, logFiles[logFiles.length - 1]) : null;
+let logStartDate = new Date().toISOString().substring(0, 10);
 
-    if (!latestFile || fs.statSync(latestFile).size >= 10 * 1024 * 1024) {
-        const newFileName = `log-${Date.now()}.txt`;
-        fs.writeFileSync(path.join(logDir, newFileName), logMessage);
+function writeLog(message) {
+    if (!fs.existsSync(logDir)) {
+        fs.mkdirSync(logDir);
+    }
+
+    const logMessage = `[${new Date().toISOString()}] ${message}\n`;
+    const logFileName = `log-${logStartDate}.txt`;
+    const logFilePath = path.join(logDir, logFileName);
+
+    if (!fs.existsSync(logFilePath) || fs.statSync(logFilePath).size >= 10 * 1024 * 1024) {
+        logStartDate = new Date().toISOString().substring(0, 10);
+        const newLogFileName = `log-${logStartDate}.txt`;
+        fs.writeFileSync(path.join(logDir, newLogFileName), logMessage);
     } else {
-        fs.appendFileSync(latestFile, logMessage);
+        fs.appendFileSync(logFilePath, logMessage);
     }
 }
 
